@@ -14,27 +14,25 @@ and the Flutter guide for
 # Scure_base
 
 [WIP]  minimal implementation of bech32, base64, base58, base32 & base16.
-## Features
 
+## Requirements
 
-TODO: List what your package can do. Maybe include images, gifs, or videos.
+- DartSdk >= V.3.9.3
+- Flutter >= V.3.35.6 
+
 
 ## Getting started
 
-TODO: List prerequisites and provide or point to information on how to
-start using the package.
+### Installation
 
-## Usage
+Install the base packages using `dart pub add`
 
-TODO: Include short and useful examples for package users. Add longer examples
-to `/example` folder. 
+*Note : This packages is not released on [pub.dev](https://pub.dev/) yet. so this only is available via git*.
 
-```dart
-const like = 'sample';
+```bash
+dart pub add "scure_base:{git: https://github.com/Bitchainer/scure_base}"
 ```
 
 ## Additional information
 
-TODO: Tell users more about the package: where to find more information, how to 
-contribute to the package, how to file issues, what response they can expect 
-from the package authors, and more.
+More information about the functionalities. you could take a look on official [scure/base](https://github.com/paulmillr/scure-base) npm package repo. 
