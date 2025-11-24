@@ -5,10 +5,16 @@ import 'dart:typed_data';
 enum Encodings { utf8, hex, base64 }
 
 class Buffer extends ListBase<int> {
-  late Uint8List bytes;
+  late Uint8List _bytes;
 
   Buffer(int length) {
-    bytes = Uint8List(length);
+    _bytes = Uint8List(length);
+  }
+
+  factory Buffer.fromList(List<int> list) {
+    Buffer buf = Buffer(list.length);
+    buf.bytes.setAll(0, list);
+    return buf;
   }
 
   factory Buffer.from(String data, [Encodings option = Encodings.utf8]) {
@@ -33,20 +39,24 @@ class Buffer extends ListBase<int> {
         return buf;
     }
   }
-
   @override
-  String toString([Encodings option = Encodings.hex]) {
+  String toString([Encodings option = Encodings.utf8]) {
     switch (option) {
       case Encodings.utf8:
-        return utf8.decode(bytes);
+        return bytes.map((e) => String.fromCharCode(e)).join();
       case Encodings.hex:
-        return bytes
-            .map((e) => e.toRadixString(16).padLeft(2, '0'))
-            .toList()
-            .toString();
+        return bytes.map((e) => e.toRadixString(16).padLeft(2, '0')).join();
       case Encodings.base64:
         return base64Encode(bytes);
     }
+  }
+
+  @override
+  Buffer sublist(int start, [int? end]) {
+    if (end != null && end > bytes.length) {
+      end = _bytes.length % end;
+    }
+    return Buffer.fromList(super.sublist(start, end));
   }
 
   @override
@@ -67,4 +77,6 @@ class Buffer extends ListBase<int> {
 
   @override
   Iterator<int> get iterator => bytes.iterator;
+
+  Uint8List get bytes => _bytes;
 }

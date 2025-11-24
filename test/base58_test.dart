@@ -1,9 +1,10 @@
 import 'dart:typed_data';
 
-import 'package:scure_base/src/coders/coder.dart';
+import 'package:scure_base/scure_base.dart';
 import 'package:test/test.dart';
 
-import 'mocks/base58mocks.dart';
+import 'mocks/vectors/base58_vectors.dart' as b58v;
+import 'mocks/vectors/base58xrm_vectors.dart' as b58xrmv;
 
 void printBufHex(Uint8List data) {
   final hex = data.map((e) => e.toRadixString(16).padLeft(2, '0')).join();
@@ -19,9 +20,27 @@ void main() {
     });
 
     test('Test encoding base58', () {
-      final base58EncodedData = base58.encode(vectors1[0].decoded);
-      expect(base58EncodedData, vectors1[0].encoded);
-      expect(base58.decode(base58EncodedData), equals(vectors1[0].decoded));
+      for (final vector in b58v.vectors) {
+        final coder = vector.isXrp == true ? base58Xrp : base58;
+        final base58EncodedData = coder.encode(vector.decoded);
+        expect(base58EncodedData, vector.encoded);
+        expect(coder.decode(base58EncodedData), equals(vector.decoded));
+      }
+    });
+
+    test('Test encoding base58xrm vectors', () {
+      for (var i = 0; i < b58xrmv.vectors.validAddrss.length; i++) {
+        final decAddress = b58xrmv.vectors.decodedAddrs[i];
+        final validAddress = b58xrmv.vectors.validAddrss[i];
+        expect(
+          validAddress,
+          base58Xrm.encode(Buffer.from(decAddress, Encodings.hex).bytes),
+        );
+        expect(
+          base58Xrm.decode(validAddress),
+          Buffer.from(decAddress, Encodings.hex).bytes,
+        );
+      }
     });
   });
 }

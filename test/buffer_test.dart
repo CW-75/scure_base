@@ -14,19 +14,37 @@ void main() {
         Encodings.hex,
       );
       expect(
-        data.toString(Encodings.hex),
-        equals(
-          "[00, 65, a1, 60, 59, 86, 4a, 2f, db, c7, c9, 9a, 47, 23, a8, 39, 5b, c6, f1, 88, eb]",
-        ),
+        data.bytes,
+        equals([
+          0x00,
+          0x65,
+          0xa1,
+          0x60,
+          0x59,
+          0x86,
+          0x4a,
+          0x2f,
+          0xdb,
+          0xc7,
+          0xc9,
+          0x9a,
+          0x47,
+          0x23,
+          0xa8,
+          0x39,
+          0x5b,
+          0xc6,
+          0xf1,
+          0x88,
+          0xeb,
+        ]),
       );
     });
     test('Buffer from Utf8', () {
-      final data = Buffer.from("0065a16059864a2fdbc7c99a4723a8395bc6f188eb");
+      final data = Buffer.from("hello world");
       expect(
-        data.toString(),
-        equals(
-          "[30, 30, 36, 35, 61, 31, 36, 30, 35, 39, 38, 36, 34, 61, 32, 66, 64, 62, 63, 37, 63, 39, 39, 61, 34, 37, 32, 33, 61, 38, 33, 39, 35, 62, 63, 36, 66, 31, 38, 38, 65, 62]",
-        ),
+        data.bytes,
+        equals([104, 101, 108, 108, 111, 32, 119, 111, 114, 108, 100]),
       );
     });
     test('Buffer from base64', () {
