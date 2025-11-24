@@ -26,11 +26,7 @@ class Chainer<T, U> extends Coder<T, U> {
   }
 
   T decode(to) {
-    final decodedFunc = args
-        .map((x) => x.decode)
-        .toList()
-        .reversed
-        .fold(id, wrap);
+    final decodedFunc = args.map((x) => x.decode).toList().fold(id, wrap);
     return decodedFunc(to);
     // return args.map((x) => x.decode).fold(id, wrap);
   }
