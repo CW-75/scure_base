@@ -1,4 +1,6 @@
-/// A library for encoding and decoding da
+/// A library for encoding and decoding data using various coders.
+library;
+
 import 'dart:typed_data';
 import 'package:crypto/crypto.dart';
 import 'package:scure_base/src/buffer.dart';

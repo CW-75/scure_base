@@ -12,8 +12,8 @@ class Chainer<T, U> extends Coder<T, U> {
   List<Coder<dynamic, dynamic>> args;
   Chainer(this.args);
 
-  dynamic id = (a) => a;
-  dynamic wrap(a, b) =>
+  Function id = (a) => a;
+  Function wrap(Function a, Function b) =>
       (c) => a(b(c));
 
   U encode(dynamic from) {

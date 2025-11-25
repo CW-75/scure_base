@@ -48,6 +48,8 @@ List<int> convertRadix(List<int> data, int from, int to) {
     res.add(carry);
     if (done) break;
   }
-  for (var i = 0; i < data.length - 1 && data[i] == 0; i++) res.add(0);
+  for (var i = 0; i < data.length - 1 && data[i] == 0; i++) {
+    res.add(0);
+  }
   return res.reversed.toList();
 }
