@@ -76,4 +76,18 @@ class XmrBase58 implements BytesCoder {
 /// Block encoding significantly reduces quadratic complexity of base58.
 BytesCoder base58Xrm = XmrBase58();
 
+Bech32Coder genBech32([Bech32Encoding encoding = Bech32Encoding.bech32]) {
+  return Bech32Coder(
+    Chainer([
+      Bech32Checksum(encoding: encoding),
+      Bech32Formatter('qpzry9x8gf2tvdw0s3jn54khce6mua7l'),
+    ]),
+  );
+}
+
 // -------------------------------------------------------------------------//
+
+//------------------------- Bech32 Coders -------------------------//
+
+final bech32 = genBech32(Bech32Encoding.bech32);
+final bech32m = genBech32(Bech32Encoding.bech32m);

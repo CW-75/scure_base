@@ -1,6 +1,6 @@
 part of 'coder.dart';
 
-class Alphabet implements Coder<List<int>, List<String>> {
+final class Alphabet implements Coder<List<int>, List<String>> {
   final List<String> letters;
   final int len;
   final Map<String, int> _indexes;

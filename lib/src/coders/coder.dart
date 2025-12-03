@@ -9,6 +9,7 @@ import 'package:scure_base/src/utils.dart';
 
 part 'alphabet.dart';
 part 'bitcoders.dart';
+part 'bech32.dart';
 part 'chain.dart';
 part 'checksum.dart';
 part 'const.dart';

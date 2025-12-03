@@ -29,3 +29,42 @@ class Checksum implements Coder<Uint8List, Uint8List> {
     return payload;
   }
 }
+
+class Bech32Checksum implements Coder<Bech32Structure, Bech32Structure> {
+  final Bech32Encoding encoding;
+
+  Bech32Structure encode(Bech32Structure data) {
+    final prefiLowered = data.prefix.toLowerCase();
+    final len = data.prefix.length;
+    var chk = 1;
+    for (var i = 0; i < len; i++) {
+      final c = prefiLowered.codeUnitAt(i);
+      if (c < 33 || c > 126) throw 'Invalid prefix character';
+      chk = _bech32Polymod(chk) ^ (c >> 5);
+    }
+    chk = _bech32Polymod(chk);
+    for (var i = 0; i < len; i++) {
+      chk = _bech32Polymod(chk) ^ (prefiLowered.codeUnitAt(i) & 0x1f);
+    }
+    for (var v in data.words) {
+      chk = _bech32Polymod(chk) ^ v;
+    }
+    for (var i = 0; i < 6; i++) {
+      chk = _bech32Polymod(chk);
+    }
+    chk ^= encoding == Bech32Encoding.bech32 ? 0x1 : 0x2bc830a3;
+    final checksumWords = convertRadix2([chk % powers[30]], 30, 5, false);
+    return (prefix: prefiLowered, words: data.words + checksumWords);
+  }
+
+  decode(Bech32Structure data) {
+    final words = data.words.sublist(0, data.words.length - 6);
+    final checksum = encode((prefix: data.prefix, words: words));
+    if (!data.words.toString().endsWith(checksum.words.toString())) {
+      throw Exception('Invalid checksum');
+    }
+    return (prefix: data.prefix, words: words);
+  }
+
+  Bech32Checksum({this.encoding = Bech32Encoding.bech32});
+}
